@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.geekbrains.winter_market.converters.ProductConverter;
 import ru.geekbrains.winter_market.dtos.ProductDto;
 import ru.geekbrains.winter_market.entities.Product;
+import ru.geekbrains.winter_market.exceptions.ResourceNotFoundException;
 import ru.geekbrains.winter_market.repositories.ProductRepository;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public class ProductService {
         if (productDto != null){
             Product product = new Product();
             product.setTitle(productDto.getTitle());
-            product.setPrice(product.getPrice());
+            product.setPrice(productDto.getPrice());
             productRepository.save(product);
         }
     }
@@ -40,6 +41,7 @@ public class ProductService {
     }
 
     public ProductDto getProductById(Long id) {
-        return productConverter.entityToDto(findById(id).get());
+        return productConverter.entityToDto(findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Продукт с id " + id + " не найден")));
     }
 }

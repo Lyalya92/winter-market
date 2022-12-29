@@ -58,7 +58,7 @@
             <input type="text" class="form-control" id="newProductTitle" ng-model="newProduct.title" placeholder="Название">
         </div>
         <div class="col-auto">
-            <input type="number" class="form-control" id="newProductPrice" ng-model="newProduct.price" placeholder="Цена">
+            <input type="number" step="any" class="form-control" id="newProductPrice" ng-model="newProduct.price" placeholder="Цена">
         </div>
         <div class="col-auto">
             <button type="submit" class="btn btn-primary mb-3">Добавить</button>
@@ -87,7 +87,7 @@
                 {{p.quantity}}
                 <button class="btn btn-primary" ng-click="changeQuantity(p.productId, 1)">+</button>
             </td>
-            <td>{{p.priceTotal}}</td>
+            <td>{{p.pricePerProduct + ' x ' + p.quantity + ' = ' + p.priceTotal}}</td>
             <td>
                 <button class="btn btn-danger" ng-click="deleteProductFromCart(p.productId)">Удалить</button>
             </td>
