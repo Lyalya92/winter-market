@@ -1,5 +1,66 @@
-angular.module('market', []).controller('indexController', function ($scope, $http) {
+angular.module('market', ['ngStorage']).controller('indexController', function ($scope, $http, $localStorage) {
     const contextPath = 'http://localhost:8189/market/api/v1';
+
+    $scope.tryToAuth = function () {
+        $http.post('http://localhost:8189/market/auth', $scope.user)
+            .then(function successCallback(response) {
+                if (response.data.token) {
+                    $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
+                    $localStorage.marketWebUser = {username: $scope.user.username, token: response.data.token};
+
+                    $scope.user.username = null;
+                    $scope.user.password = null;
+                }
+            }, function errorCallback(response) {
+            });
+    };
+
+    $scope.tryToLogout = function () {
+        $scope.clearUser();
+        $scope.user = null;
+    };
+
+    $scope.clearUser = function () {
+        delete $localStorage.marketWebUser;
+        $http.defaults.headers.common.Authorization = '';
+    };
+
+    $scope.isUserLoggedIn = function () {
+        if ($localStorage.marketWebUser) {
+            return true;
+        } else {
+            return false;
+        }
+    };
+
+    $scope.isAdmin = function () {
+        return false;
+//            if ($localStorage.marketWebUser) {
+//                return true;
+//            } else {
+//                return false;
+//            }
+        };
+
+    $scope.showHelp = function () {
+        alert("Войдите под своей учетной записью или зарегистрируйтесь для оформления заказа")
+    }
+
+    if ($localStorage.marketWebUser) {
+        try {
+            let jwt = $localStorage.marketWebUser.token;
+            let payload = JSON.parse(atob(jwt.split('.')[1]));
+            let currentTime = parseInt(new Date().getTime() / 1000);
+            if (currentTime > payload.exp) {
+                console.log("Token is expired!");
+                $scope.clearUser;
+            }
+        } catch (e) {
+        }
+
+        $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.marketWebUser.token;
+
+    }
 
     $scope.loadProducts = function () {
          $http.get(contextPath + '/products')
@@ -72,6 +133,15 @@ angular.module('market', []).controller('indexController', function ($scope, $ht
                 .then(function (response) {
                     $scope.showCart();
                 });
+    }
+
+    $scope.createOrder = function () {
+        $http.post(contextPath + '/orders', $scope.orderData)
+                    .then(function (response) {
+                        $scope.orderData = null;
+                        $scope.clearCart();
+                        $scope.showCart();
+                    });
     }
 
     $scope.loadProducts();
