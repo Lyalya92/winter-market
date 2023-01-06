@@ -1,4 +1,4 @@
-package ru.geekbrains.winter_market.services;
+package ru.geekbrains.winter_market.soap;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

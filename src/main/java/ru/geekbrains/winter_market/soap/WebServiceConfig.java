@@ -1,4 +1,4 @@
-package ru.geekbrains.winter_market.configs;
+package ru.geekbrains.winter_market.soap;
 
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.ApplicationContext;

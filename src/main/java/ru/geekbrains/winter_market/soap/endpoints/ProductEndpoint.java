@@ -1,11 +1,11 @@
-package ru.geekbrains.winter_market.endpoints;
+package ru.geekbrains.winter_market.soap.endpoints;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.ws.server.endpoint.annotation.Endpoint;
 import org.springframework.ws.server.endpoint.annotation.PayloadRoot;
 import org.springframework.ws.server.endpoint.annotation.RequestPayload;
 import org.springframework.ws.server.endpoint.annotation.ResponsePayload;
-import ru.geekbrains.winter_market.services.ProductServiceSOAP;
+import ru.geekbrains.winter_market.soap.ProductServiceSOAP;
 import ru.geekbrains.winter_market.soap.products.GetAllProductsRequest;
 import ru.geekbrains.winter_market.soap.products.GetAllProductsResponse;
 import ru.geekbrains.winter_market.soap.products.GetProductByIdRequest;
