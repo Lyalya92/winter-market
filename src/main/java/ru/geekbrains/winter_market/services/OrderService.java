@@ -35,9 +35,8 @@ public class OrderService {
         order.setAddress(orderDto.getAddress());
         order.setPhone(orderDto.getPhone());
         order.setTotalPrice(cartService.getCart().getTotalPrice());
-        orderRepository.save(order);
-        List<Order> orders = orderRepository.findByUser(user);
-        createOrderItems(cartService.getCart().getProducts(), orders.get(orders.size()-1).getId());
+        Long orderId =  orderRepository.save(order).getId();
+        createOrderItems(cartService.getCart().getProducts(), orderId);
     }
 
     public void createOrderItems (List <CartItemDto> cartItems, Long orderId) {
