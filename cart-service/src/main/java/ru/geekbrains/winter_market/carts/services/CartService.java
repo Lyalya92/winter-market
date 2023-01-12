@@ -2,8 +2,6 @@ package ru.geekbrains.winter_market.carts.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.winter_market.api.ProductDto;
-import ru.geekbrains.winter_market.carts.exceptions.ResourceNotFoundException;
 import ru.geekbrains.winter_market.carts.integrations.ProductServiceIntegration;
 import ru.geekbrains.winter_market.carts.model.Cart;
 
@@ -30,8 +28,7 @@ public class CartService {
     }
 
     public void addProductToCart(Long productId) {
-          cart.add(productServiceIntegration.getProductById(productId)
-                  .orElseThrow(() -> new ResourceNotFoundException("Продукт с id " + productId + " не найден")));
+          cart.add(productServiceIntegration.getProductById(productId));
     }
 
     public void deleteProductFromCart(Long id) {

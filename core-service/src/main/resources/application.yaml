@@ -1,7 +1,7 @@
 server:
   port: 8189
   servlet:
-    context-path: /market
+    context-path: /market-core
 spring:
   datasource:
     driver-class-name: org.h2.Driver
@@ -18,7 +18,9 @@ spring:
       enabled: true
       settings:
         web-allow-others: false
-
-jwt:
-  secret: F283hi8wregf83w4gf8734#yto34ht98h8&G*&^F7f3r87gihdsf
-  lifetime: 36000000
+integrations:
+  cart-service:
+    url: http://localhost:8190/market-carts
+    read-timeout: 10000
+    write-timeout: 2000
+    connect-timeout: 5000

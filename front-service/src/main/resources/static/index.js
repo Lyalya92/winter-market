@@ -1,8 +1,8 @@
 angular.module('market', ['ngStorage']).controller('indexController', function ($scope, $http, $localStorage) {
-    const contextPath = 'http://localhost:8189/market/api/v1';
+//    const contextPath = 'http://localhost:8189/market/api/v1';
 
     $scope.tryToAuth = function () {
-        $http.post('http://localhost:8189/market/auth', $scope.user)
+        $http.post('http://localhost:5555/auth/authenticate', $scope.user)
             .then(function successCallback(response) {
                 if (response.data.token) {
                     $http.defaults.headers.common.Authorization = 'Bearer ' + response.data.token;
@@ -62,38 +62,35 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
 
     }
 
-    $scope.loadProducts = function () {
-         $http.get(contextPath + '/products')
-             .then(function (response) {
-                 $scope.products = response.data;
-             });
-     }
-
-     $scope.showProductInfo = function (productId) {
-        $http.get(contextPath + '/products/' + productId)
-                     .then(function (response) {
-                         console.log(response.data);
-                         alert(response.data.title)
-                     });
-     }
-
+    $scope.loadProducts = function (page, pageSize) {
+                 $http({
+                     url: 'http://localhost:5555/core/api/v1/products',
+                     method: 'GET',
+                     params: {
+                         page: page,
+                         pageSize: pageSize
+                     }
+                 }).then(function (response) {
+                     $scope.products = response.data;
+                 });
+    }
 
     $scope.showCart = function () {
-        $http.get('http://localhost:8190/market-carts/api/v1/cart')
+        $http.get('http://localhost:5555/cart/api/v1/cart')
             .then(function (response) {
                 $scope.cartContent = response.data;
             });
     }
 
     $scope.deleteProduct = function (id) {
-        $http.delete(contextPath + '/products/' + id)
+        $http.delete('http://localhost:5555/core/api/v1/products/' + id)
             .then(function (response) {
                 $scope.loadProducts();
             });
     }
 
     $scope.addNewProduct = function () {
-        $http.post(contextPath + '/products', $scope.newProduct)
+        $http.post('http://localhost:5555/core/api/v1/products', $scope.newProduct)
             .then(function (response) {
                 $scope.newProduct = null;
                 $scope.loadProducts();
@@ -102,14 +99,14 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
 
 
     $scope.addProductToCart = function (id) {
-         $http.get('http://localhost:8190/market-carts/api/v1/cart/add/' + id)
+         $http.get('http://localhost:5555/cart/api/v1/cart/add/' + id)
                 .then(function (response) {
                     $scope.showCart();
                 });
     }
 
      $scope.deleteProductFromCart = function (id) {
-         $http.get('http://localhost:8190/market-carts/api/v1/cart/delete/' + id)
+         $http.get('http://localhost:5555/cart/api/v1/cart/delete/' + id)
                     .then(function (response) {
                         $scope.showCart();
                     });
@@ -117,7 +114,7 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
 
      $scope.changeQuantity = function (id, delta) {
              $http({
-                 url: 'http://localhost:8190/market-carts/api/v1/cart/change_quantity',
+                 url: 'http://localhost:5555/cart/api/v1/cart/change_quantity',
                  method: 'GET',
                  params: {
                      id: id,
@@ -129,14 +126,14 @@ angular.module('market', ['ngStorage']).controller('indexController', function (
      }
 
     $scope.clearCart = function () {
-         $http.delete('http://localhost:8190/market-carts/api/v1/cart')
+         $http.get('http://localhost:5555/cart/api/v1/cart/clear')
                 .then(function (response) {
                     $scope.showCart();
                 });
     }
 
     $scope.createOrder = function () {
-        $http.post(contextPath + '/orders', $scope.orderData)
+        $http.post('http://localhost:5555/core/api/v1/orders', $scope.orderData)
                     .then(function (response) {
                         $scope.orderData = null;
                         $scope.clearCart();

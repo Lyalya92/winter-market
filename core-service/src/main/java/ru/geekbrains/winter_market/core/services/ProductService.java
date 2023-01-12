@@ -1,6 +1,7 @@
 package ru.geekbrains.winter_market.core.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import ru.geekbrains.winter_market.api.ProductDto;
 import ru.geekbrains.winter_market.core.converters.ProductConverter;
@@ -18,8 +19,8 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductConverter productConverter;
 
-    public List<ProductDto> findAllProducts() {
-        return productRepository.findAll()
+    public List<ProductDto> findAllProducts(int page, int pageSize) {
+         return productRepository.findAll(PageRequest.of(page, pageSize))
                 .stream().map(productConverter::entityToDto).collect(Collectors.toList());
     }
 

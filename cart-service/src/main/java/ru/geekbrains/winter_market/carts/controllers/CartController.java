@@ -10,7 +10,6 @@ import ru.geekbrains.winter_market.carts.services.CartService;
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
-@CrossOrigin("*")
 public class CartController {
     private final CartService cartService;
     private final CartConverter cartConverter;
@@ -35,7 +34,7 @@ public class CartController {
         cartService.changeProductQuantity(id, delta);
     }
 
-    @DeleteMapping
+    @GetMapping("/clear")
     public void clearCart() {
         cartService.clearCart();
     }
