@@ -1,4 +1,4 @@
-package ru.geekbrains.winter_market.core.services;
+package ru.geekbrains.winter_market.auth.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -7,9 +7,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import ru.geekbrains.winter_market.core.entities.Role;
-import ru.geekbrains.winter_market.core.entities.User;
-import ru.geekbrains.winter_market.core.repositories.UserRepository;
+import ru.geekbrains.winter_market.auth.entities.Role;
+import ru.geekbrains.winter_market.auth.entities.User;
+import ru.geekbrains.winter_market.auth.repositories.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.Collection;

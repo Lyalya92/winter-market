@@ -8,7 +8,6 @@ import ru.geekbrains.winter_market.api.OrderDto;
 import ru.geekbrains.winter_market.core.converters.OrderConverter;
 import ru.geekbrains.winter_market.core.entities.Order;
 import ru.geekbrains.winter_market.core.entities.OrderItem;
-import ru.geekbrains.winter_market.core.entities.User;
 import ru.geekbrains.winter_market.core.integrations.CartServiceIntegration;
 import ru.geekbrains.winter_market.core.repositories.OrderRepository;
 import ru.geekbrains.winter_market.core.exceptions.OrderNotFoundException;
@@ -24,25 +23,21 @@ import java.util.stream.Collectors;
 public class OrderService {
     private final CartServiceIntegration cartServiceIntegration;
     private final ProductService productService;
-    private final UserService userService;
     private final OrderRepository orderRepository;
     private final OrderConverter orderConverter;
 
     @Transactional
     public void createOrder(OrderDto orderDto) {
-        CartDto cart = cartServiceIntegration.getCurrentCart()
-                .orElseThrow(() -> new ResourceNotFoundException("Текущая корзина не найдена"));
-
-        User user = userService.findByUsername(orderDto.getUsername())
-                .orElseThrow(() -> new ResourceNotFoundException("Пользователь с ником " + orderDto.getUsername() + " не найден"));
+        CartDto cart = cartServiceIntegration.getCurrentCart();
 
         Order order = new Order();
-        order.setUser(user);
+        order.setUsername(orderDto.getUsername());
         order.setAddress(orderDto.getAddress());
         order.setPhone(orderDto.getPhone());
         order.setTotalPrice(cart.getTotalPrice());
         order.setItems(createOrderItemsList(cart.getProducts(), order));
         orderRepository.save(order);
+        cartServiceIntegration.clear();
     }
 
     public List<OrderItem> createOrderItemsList (List<CartItemDto> cartItems, Order order) {

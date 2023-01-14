@@ -1,42 +1,35 @@
 package ru.geekbrains.winter_market.core.entities;
 
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
-@Table(name = "users")
+@Table(name = "categories")
+@NoArgsConstructor
 @Data
-public class User {
+public class Category {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name = "title")
+    private String title;
 
-    @Column(name = "password")
-    private String password;
+    @OneToMany(mappedBy = "category")
+    private List<Product> products;
 
-    @Column(name = "email")
-    private String email;
-
-    @ManyToMany
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Collection<Role> roles;
-
-    @CreationTimestamp
     @Column(name = "created_at")
+    @CreationTimestamp
     private LocalDateTime createdAt;
 
-    @UpdateTimestamp
     @Column(name = "updated_at")
+    @UpdateTimestamp
     private LocalDateTime updatedAt;
 }

@@ -1,9 +1,9 @@
-package ru.geekbrains.winter_market.core.repositories;
+package ru.geekbrains.winter_market.auth.repositories;
 
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.geekbrains.winter_market.core.entities.Role;
+import ru.geekbrains.winter_market.auth.entities.Role;
 
 import java.util.Optional;
 
