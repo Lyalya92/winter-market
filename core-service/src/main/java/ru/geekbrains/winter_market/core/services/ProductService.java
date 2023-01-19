@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final CategoryService categoryService;
     private final ProductConverter productConverter;
 
     public List<ProductDto> findAllProducts(int page, int pageSize) {
@@ -24,13 +25,16 @@ public class ProductService {
                 .stream().map(productConverter::entityToDto).collect(Collectors.toList());
     }
 
-    public void addNewProduct(ProductDto productDto) {
-        if (productDto != null){
+    public Product addNewProduct(ProductDto productDto) {
+        if (productDto != null) {
             Product product = new Product();
             product.setTitle(productDto.getTitle());
             product.setPrice(productDto.getPrice());
-            productRepository.save(product);
+            product.setCategory(categoryService.findByTitle(productDto.getCategory())
+                    .orElseThrow(() -> new ResourceNotFoundException("Категория не найдена")));
+            return productRepository.save(product);
         }
+        return null;
     }
 
     public void deleteProductById(Long id) {
@@ -44,5 +48,10 @@ public class ProductService {
     public ProductDto getProductById(Long id) {
         return productConverter.entityToDto(findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Продукт с id " + id + " не найден")));
+    }
+
+    public ProductDto getProductByTitle(String title) {
+        return productConverter.entityToDto(productRepository.findByTitle(title)
+                .orElseThrow(() -> new ResourceNotFoundException("Продукт с названием " + title + " не найден")));
     }
 }
