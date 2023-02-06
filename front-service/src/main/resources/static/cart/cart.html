@@ -1,0 +1,61 @@
+<div>
+    <h3>Содержание корзины: </h3>
+    <p></p>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Название</td>
+            <td>Количество</td>
+            <td>Цена</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in cartContent.products">
+            <td>{{p.productId}}</td>
+            <td>{{p.productTitle}}</td>
+            <td>
+                <button class="btn btn-primary" ng-click="changeQuantity(p.productId, -1)">-</button>
+                {{p.quantity}}
+                <button class="btn btn-primary" ng-click="changeQuantity(p.productId, 1)">+</button>
+            </td>
+            <td>{{p.pricePerProduct + ' x ' + p.quantity + ' = ' + p.priceTotal}}</td>
+            <td>
+                <button class="btn btn-danger" ng-click="deleteProductFromCart(p.productId)">Удалить</button>
+            </td>
+        </tr>
+        <tr>
+            <td>Итоговая цена: </td>
+            <td> {{cartContent.totalPrice}}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p></p>
+    <table>
+        <tbody>
+        <tr>
+            <td>
+                <button class="btn btn-primary" ng-click="clearCart()">Очистить корзину</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p></p>
+    <form class="row g-3" ng-submit="createOrder()">
+        <div class="col-auto">
+            <input type="text" required class="form-control" id="address" ng-model="orderData.address" placeholder="Адрес">
+        </div>
+        <div class="col-auto">
+            <input type="text"  required class="form-control" id="phone" ng-model="orderData.phone" placeholder="Телефон">
+        </div>
+        <div class="col-auto">
+            <button type="submit" ng-disabled="!isUserLoggedIn()" class="btn btn-primary mb-3">Оформить заказ</button>
+        </div>
+        <div class="col-auto" ng-show="!isUserLoggedIn()">
+            <button type="button" class="btn btn-secondary" ng-click="showHelp()">?</button>
+        </div>
+
+    </form>
+</div>
