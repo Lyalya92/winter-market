@@ -1,0 +1,77 @@
+<div>
+    <p></p>
+    <h3>Список товаров</h3>
+    <p></p>
+    <form class="form-inline" ng-submit="loadProduct()">
+        <input type="number" class="form-control mb-2 mr-sm-2" id="inputMinPrice" placeholder="Цена: от">
+        <input type="number" class="form-control mb-2 mr-sm-2" id="inputMaxPrice" placeholder="Цена: до">
+        <div class="input-group mb-2 mr-sm-2">
+            <input type="text" class="form-control" id="searchTitle" placeholder="Название продукта">
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">Поиск</button>
+    </form>
+    <p></p>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>ID</td>
+            <td>Название</td>
+            <td>Цена</td>
+            <td>Категория</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr ng-repeat="p in products">
+            <td>{{p.id}}</td>
+            <td>{{p.title}}</td>
+            <td>{{p.price}}</td>
+            <td>{{p.category}}</td>
+            <td>
+                <button class="btn btn-primary mb-3" ng-click="addProductToCart(p.id)">В корзину</button>
+            </td>
+            <td>
+                <button ng-show="isAdmin()" class="btn btn-danger" ng-click="deleteProduct(p.id)">Удалить</button>
+            </td>
+
+        </tr>
+        </tbody>
+    </table>
+
+    <nav aria-label="pagination">
+        <ul class="pagination justify-content-end">
+            <li class="page-item disabled">
+                <a class="page-link"> &laquo;</a>
+            </li>
+            <li class="page-item">
+                <a ng-click="loadProducts(0, 10)" class="page-link">1</a>
+            </li>
+            <li class="page-item">
+                <a ng-click="loadProducts(1, 10)" class="page-link">2</a>
+            </li>
+            <li class="page-item">
+                <a ng-click="loadProducts(2, 10)" class="page-link">3</a>
+            </li>
+            <li class="page-item">
+                <a class="page-link" href="#">&raquo;</a>
+            </li>
+        </ul>
+    </nav>
+
+        <p></p>
+        <h3>Добавить новый продукт</h3>
+        <p></p>
+        <form class="row g-3" ng-submit="addNewProduct()">
+            <div class="col-auto">
+                <input type="text" class="form-control" id="newProductTitle" ng-model="newProduct.title" placeholder="Название">
+            </div>
+            <div class="col-auto">
+                <input type="number" step="any" class="form-control" id="newProductPrice" ng-model="newProduct.price" placeholder="Цена">
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary mb-3">Добавить</button>
+            </div>
+        </form>
+        <p></p>
+</div>
