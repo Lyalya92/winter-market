@@ -19,16 +19,21 @@ public class Cart {
     }
 
     public void add(ProductDto productDto) {
-        for (CartItem item : products) {
-            if (item.getProductId().equals(productDto.getId())) {
-                item.changeQuantity(1);
-                recalculate();
-                return;
-            }
-        }
+       for (CartItem item : products) {
+           if (item.getProductId().equals(productDto.getId())) {
+                 item.changeQuantity(1);
+                 recalculate();
+                 return;
+           }
+       }
         CartItem newItem = new CartItem(productDto.getId(), productDto.getTitle(), 1,
                                                 productDto.getPrice(), productDto.getPrice());
         products.add(newItem);
+        recalculate();
+    }
+
+    public void add (CartItem cartItem) {
+        products.add(cartItem);
         recalculate();
     }
 

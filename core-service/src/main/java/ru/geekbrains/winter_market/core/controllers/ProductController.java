@@ -1,6 +1,7 @@
 package ru.geekbrains.winter_market.core.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.geekbrains.winter_market.api.ProductDto;
@@ -17,7 +18,7 @@ public class ProductController {
     private final ProductConverter productConverter;
 
     @GetMapping
-    public List<ProductDto> findAllProducts(@RequestParam (defaultValue = "1", name = "p") Integer page,
+    public Page<ProductDto> findAllProducts(@RequestParam (defaultValue = "1", name = "p") Integer page,
                                             @RequestParam (defaultValue = "10", name = "p_size")Integer pageSize,
                                             @RequestParam(name = "min_price", required = false) Integer minPrice,
                                             @RequestParam(name = "max_price", required = false) Integer maxPrice,
@@ -27,7 +28,7 @@ public class ProductController {
             page = 1;
         }
         return productService.findAllProducts(page - 1, pageSize, minPrice, maxPrice, partTitle)
-                                                .map(productConverter::entityToDto).getContent();
+                                                .map(productConverter::entityToDto);
     }
 
     @GetMapping("/{id}")
