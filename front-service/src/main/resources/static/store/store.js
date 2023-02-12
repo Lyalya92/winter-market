@@ -11,7 +11,7 @@ angular.module('market').controller('storeController', function ($scope, $http, 
                          pageSize: pageSize
                     }
                  }).then(function (response) {
-                      $scope.products = response.data;
+                      $scope.products = response.data.content;
                  });
         };
 
@@ -32,7 +32,7 @@ angular.module('market').controller('storeController', function ($scope, $http, 
 
 
      $scope.addProductToCart = function (id) {
-          $http.get(cartContextPath + 'add/' + id)
+          $http.get(cartContextPath + $localStorage.marketWebUserGuestId + '/add/' + id)
                      .then(function (response) {
                      });
        };

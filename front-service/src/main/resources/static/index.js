@@ -37,7 +37,14 @@
             }
 
             $http.defaults.headers.common.Authorization = 'Bearer ' + $localStorage.marketWebUser.token;
+
         }
+        if (!$localStorage.marketWebUserGuestId) {
+           $http.get('http://localhost:5555/cart/api/v1/cart/generate_uuid')
+                     .then(function (response) {
+                          $localStorage.marketWebUserGuestId = response.data.value;
+                          });
+           }
     }
 })();
 
@@ -53,7 +60,7 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
 
                     $scope.user.username = null;
                     $scope.user.password = null;
-
+                    $scope.mergeCart();
                     $location.path('/');
                 }
             }, function errorCallback(response) {
@@ -64,6 +71,12 @@ angular.module('market').controller('indexController', function ($rootScope, $sc
         $scope.clearUser();
         $scope.user = null;
         $location.path('/');
+    };
+
+    $scope.mergeCart = function () {
+    $http.get('http://localhost:5555/cart/api/v1/cart/' + $localStorage.marketWebUserGuestId + '/merge_cart')
+              .then(function (response) {
+              });
     };
 
     $scope.clearUser = function () {
